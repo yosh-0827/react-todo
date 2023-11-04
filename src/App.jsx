@@ -29,6 +29,16 @@ export const App = () => {
     setTodoText(""); //入力エリアをから文字にリセットする
   };
 
+  /*
+  削除ボタンを押した時に対象を削除する
+  index:要素が何番目か
+   */
+  const onClickDelete = (index) => {
+    const newTodos = [...inCompleteTodos]; //未完成リスト（配列）をコピー
+    newTodos.splice(index, 1);
+    setIncompleteTodos(newTodos);
+  };
+
   return (
     <>
       <div className="input-area">
@@ -42,12 +52,12 @@ export const App = () => {
       <div className="incomplete-area">
         <p className="title">未完了のTODO</p>
         <ul>
-          {inCompleteTodos.map((todo) => {
+          {inCompleteTodos.map((todo, index) => {
             return (
               <div key={todo} className="list-row">
                 <li>{todo}</li>
                 <button>完了</button>
-                <button>削除</button>
+                <button onClick={() => onClickDelete(index)}>削除</button>
               </div>
             );
           })}
