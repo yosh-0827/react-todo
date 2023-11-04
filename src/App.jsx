@@ -39,6 +39,21 @@ export const App = () => {
     setIncompleteTodos(newTodos);
   };
 
+  /*
+  完了ボタンを押したらタスクが作成される
+   */
+  const onClickComplete = (index) => {
+    //完了のTodoでも未完了のTodoから完了したらタスクを削除するので、削除機能を使う
+    const newIncompleteTodos = [...inCompleteTodos];
+    newIncompleteTodos.splice(index, 1);
+
+    //完了のTodoの後ろに未完了のTodoで完了したものを持ってくる
+    const newCompleteTodos = [...comleteTodos, inCompleteTodos[index]];
+
+    setIncompleteTodos(newIncompleteTodos);
+    setCompleteTodos(newCompleteTodos);
+  };
+
   return (
     <>
       <div className="input-area">
@@ -56,7 +71,7 @@ export const App = () => {
             return (
               <div key={todo} className="list-row">
                 <li>{todo}</li>
-                <button>完了</button>
+                <button onClick={() => onClickComplete(index)}>完了</button>
                 <button onClick={() => onClickDelete(index)}>削除</button>
               </div>
             );
