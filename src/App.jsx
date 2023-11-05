@@ -5,12 +5,9 @@ export const App = () => {
   //入力エリアのState
   const [todoText, setTodoText] = useState([""]);
   //未完了エリアのState
-  const [inCompleteTodos, setIncompleteTodos] = useState([
-    "あああああ",
-    "いいいいい",
-  ]);
+  const [inCompleteTodos, setIncompleteTodos] = useState([]);
   //完了エリアのState
-  const [comleteTodos, setCompleteTodos] = useState(["ううううう"]);
+  const [comleteTodos, setCompleteTodos] = useState([]);
 
   //入力エリアで入力があったら制御する
   /*event.target.valueは実際の入力値が入ってくるところ
@@ -39,10 +36,6 @@ export const App = () => {
     setIncompleteTodos(newTodos);
   };
 
-  /**
-   * タスクを戻す機能
-   */
-
   /*
   完了ボタンを押したらタスクが作成される
    */
@@ -55,6 +48,22 @@ export const App = () => {
     const newCompleteTodos = [...comleteTodos, inCompleteTodos[index]];
 
     setIncompleteTodos(newIncompleteTodos);
+    setCompleteTodos(newCompleteTodos);
+  };
+
+  /**
+   * タスクを戻す機能
+   */
+  const onClickReverse = (index) => {
+    //完了済みのTODOから戻す対象を選択し、既存配列から削除
+    const newCompleteTodos = [...comleteTodos];
+    newCompleteTodos.splice(index, 1);
+
+    //未完了のTODO配列に戻すタスクを追加
+    const newReverseTodos = [...inCompleteTodos, comleteTodos[index]];
+
+    //セット
+    setIncompleteTodos(newReverseTodos);
     setCompleteTodos(newCompleteTodos);
   };
 
@@ -85,11 +94,11 @@ export const App = () => {
       <div className="complete-area">
         <p className="title">完了のTODO</p>
         <ul>
-          {comleteTodos.map((todo) => {
+          {comleteTodos.map((todo, index) => {
             return (
               <div key={todo} className="list-row">
                 <li>{todo}</li>
-                <button>戻す</button>
+                <button onClick={() => onClickReverse(index)}>戻す</button>
               </div>
             );
           })}
