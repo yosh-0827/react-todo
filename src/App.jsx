@@ -39,6 +39,10 @@ export const App = () => {
     setIncompleteTodos(newTodos);
   };
 
+  /**
+   * タスクを戻す機能
+   */
+
   /*
   完了ボタンを押したらタスクが作成される
    */
