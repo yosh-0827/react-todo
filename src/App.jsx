@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import "./styles.css";
+import { InputTodo } from "./components/InputTodo";
+import { InCompleteTodo } from "./components/InCompleteTodo";
+import { CompleteTodo } from "./components/CompleteTodo";
 
 export const App = () => {
   //入力エリアのState
@@ -7,7 +10,7 @@ export const App = () => {
   //未完了エリアのState
   const [inCompleteTodos, setIncompleteTodos] = useState([]);
   //完了エリアのState
-  const [comleteTodos, setCompleteTodos] = useState([]);
+  const [completeTodos, setCompleteTodos] = useState([]);
 
   //入力エリアで入力があったら制御する
   /*event.target.valueは実際の入力値が入ってくるところ
@@ -45,7 +48,7 @@ export const App = () => {
     newIncompleteTodos.splice(index, 1);
 
     //完了のTodoの後ろに未完了のTodoで完了したものを持ってくる
-    const newCompleteTodos = [...comleteTodos, inCompleteTodos[index]];
+    const newCompleteTodos = [...completeTodos, inCompleteTodos[index]];
 
     setIncompleteTodos(newIncompleteTodos);
     setCompleteTodos(newCompleteTodos);
@@ -56,11 +59,11 @@ export const App = () => {
    */
   const onClickReverse = (index) => {
     //完了済みのTODOから戻す対象を選択し、既存配列から削除
-    const newCompleteTodos = [...comleteTodos];
+    const newCompleteTodos = [...completeTodos];
     newCompleteTodos.splice(index, 1);
 
     //未完了のTODO配列に戻すタスクを追加
-    const newReverseTodos = [...inCompleteTodos, comleteTodos[index]];
+    const newReverseTodos = [...inCompleteTodos, completeTodos[index]];
 
     //セット
     setIncompleteTodos(newReverseTodos);
@@ -69,41 +72,17 @@ export const App = () => {
 
   return (
     <>
-      <div className="input-area">
-        <input
-          placeholder="TODOを入力"
-          value={todoText}
-          onChange={onChangeTodoText}
-        />
-        <button onClick={onClickAdd}>追加</button>
-      </div>
-      <div className="incomplete-area">
-        <p className="title">未完了のTODO</p>
-        <ul>
-          {inCompleteTodos.map((todo, index) => {
-            return (
-              <div key={todo} className="list-row">
-                <li>{todo}</li>
-                <button onClick={() => onClickComplete(index)}>完了</button>
-                <button onClick={() => onClickDelete(index)}>削除</button>
-              </div>
-            );
-          })}
-        </ul>
-      </div>
-      <div className="complete-area">
-        <p className="title">完了のTODO</p>
-        <ul>
-          {comleteTodos.map((todo, index) => {
-            return (
-              <div key={todo} className="list-row">
-                <li>{todo}</li>
-                <button onClick={() => onClickReverse(index)}>戻す</button>
-              </div>
-            );
-          })}
-        </ul>
-      </div>
+      <InputTodo
+        todoText={todoText}
+        onChange={onChangeTodoText}
+        onClick={onClickAdd}
+      />
+      <InCompleteTodo
+        inCompleteTodos={inCompleteTodos}
+        onClickComp={onClickComplete}
+        onClickDel={onClickDelete}
+      />
+      <CompleteTodo completeTodos={completeTodos} onClickRev={onClickReverse} />
     </>
   );
 };
